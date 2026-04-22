@@ -14,7 +14,9 @@ class Chore(models.Model):
 
 class Assignment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assignments")
-    chore = models.ForeignKey(Chore, on_delete=models.CASCADE, related_name="assignments")
+    chore = models.ForeignKey(
+        Chore, on_delete=models.CASCADE, related_name="assignments"
+    )
     completed = models.BooleanField(default=False)
     points = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
