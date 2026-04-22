@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import { fetchChores } from '../api.js'
-import { Container, Form } from 'react-bootstrap'
+import {useEffect, useState} from 'react'
+import {fetchChores} from '../api.js'
+import { Accordion, Container, Form, Table } from 'react-bootstrap'
 import Chore from './Chore.jsx'
-import { errorTimeout } from '../utils/utils.js'
+import CreateChore from './CreateChore.jsx'
 
 export default function ChoresList() {
     const [chores, setChores] = useState([])
@@ -28,28 +28,48 @@ export default function ChoresList() {
     }, [])
 
     useEffect(() => {
-        errorTimeout(error)
+        if (error !== '') {
+            setTimeout(() => setError(''), 10000)
+        }
     }, [error])
 
     return (
-        <Container>
-            {isLoading && <span>Loading...</span>}
+        <Container className="d-flex flex-column align-items-center">
             {error !== '' && (
                 <div>
                     <Form.Control value={error} disabled></Form.Control>
                 </div>
             )}
-            {chores?.length > 0 && (
-                <div>
-                    {chores.map((c) => (
-                        <Chore
-                            key={c.id}
-                            data={c}
-                            setIsLoading={setIsLoading}
-                            setError={setError}
-                        />
-                    ))}
-                </div>
+            <Accordion defaultActiveKey="0" flush className="mb-3 w-75">
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header>Create chore</Accordion.Header>
+                    <Accordion.Body>
+                        <CreateChore getChores={getChores}/>
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
+            {isLoading && <span>Loading...</span>}
+            {!isLoading && chores?.length > 0 && (
+                <Table striped bordered hover size="sm" className="w-75">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Points</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {chores.map((c) => (
+                            <Chore
+                                key={c.id}
+                                data={c}
+                                setIsLoading={setIsLoading}
+                                setError={setError}
+                            />
+                        ))}
+                    </tbody>
+                </Table>
             )}
         </Container>
     )

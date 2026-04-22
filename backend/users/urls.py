@@ -5,7 +5,7 @@ from users.views import SignUpView, UsersListView, CustomLoginView, CustomLogout
 app_name = "users"
 
 urlpatterns = [
-    path("signup/", SignUpView.as_view(), name="signup"),
+    path("register/", SignUpView.as_view(), name="signup"),
     path("users/", UsersListView.as_view(), name="users"),
     path("login/", CustomLoginView.as_view(), name="login"),
     path("logout/", CustomLogoutView.as_view(), name="logout"),

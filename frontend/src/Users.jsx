@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import {getUsers} from "./api.js";
+import {fetchUsers} from "./api.js";
 
 export default function UsersList() {
     const [users, setUsers] = useState([])
 
     async function collectUsers() {
-        const response = await getUsers()
+        const response = await fetchUsers()
         setUsers(response)
     }
 

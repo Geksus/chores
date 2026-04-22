@@ -1,7 +1,7 @@
 from rest_framework import generics
 
-from chores.models import Chore
-from .serializers import ChoreSerializer
+from .models import Chore, Assignment
+from .serializers import ChoreSerializer, AssignmentSerializer
 
 
 class ChoreListView(generics.ListAPIView):
@@ -24,3 +24,16 @@ class ChoreDeleteView(generics.DestroyAPIView):
     serializer_class = ChoreSerializer
     lookup_field = "pk"
     http_method_names = ["delete"]
+
+
+class AssignmentListView(generics.ListAPIView):
+    queryset = Assignment.objects.all()
+    serializer_class = AssignmentSerializer
+
+
+class AssignmentCreateView(generics.CreateAPIView):
+    authentication_classes = []
+    permission_classes = []
+
+    model = Assignment
+    serializer_class = AssignmentSerializer

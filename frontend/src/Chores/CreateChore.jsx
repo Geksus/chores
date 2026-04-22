@@ -1,23 +1,14 @@
-import { useEffect, useState } from 'react'
-import { createChore } from '../api.js'
-import {
-    Button,
-    Container,
-    Form,
-    FormControl,
-    InputGroup,
-} from 'react-bootstrap'
-import { errorTimeout } from '../utils/utils.js'
-import { useNavigate } from 'react-router-dom'
+import {useEffect, useState} from 'react'
+import {createChore} from '../api.js'
+import {Button, Container, Form, FormControl, InputGroup,} from 'react-bootstrap'
+import {errorTimeout} from '../utils/utils.js'
 
-export default function CreateChore() {
+export default function CreateChore({getChores}) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [base_points, setBase_points] = useState(0)
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-
-    const navigate = useNavigate()
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -26,7 +17,10 @@ export default function CreateChore() {
 
         try {
             await createChore(title, description, base_points)
-            navigate('/chores')
+            setTitle('')
+            setDescription('')
+            setBase_points(0)
+            getChores()
         } catch (error) {
             setError(error.message)
         } finally {
@@ -39,7 +33,7 @@ export default function CreateChore() {
     }, [error])
 
     return (
-        <Container className="w-75">
+        <Container>
             {isLoading && <span>Loading...</span>}
             {error !== '' && (
                 <div>
@@ -50,7 +44,7 @@ export default function CreateChore() {
                 className="d-flex flex-column gap-2"
                 onSubmit={(e) => handleSubmit(e)}
             >
-                <InputGroup>
+                <InputGroup size="sm">
                     <InputGroup.Text className="w-25" column="sm">
                         Title
                     </InputGroup.Text>
@@ -59,7 +53,7 @@ export default function CreateChore() {
                         onChange={(e) => setTitle(e.target.value)}
                     ></Form.Control>
                 </InputGroup>
-                <InputGroup>
+                <InputGroup size="sm">
                     <InputGroup.Text className="w-25" column="sm">
                         Description
                     </InputGroup.Text>
@@ -68,7 +62,7 @@ export default function CreateChore() {
                         onChange={(e) => setDescription(e.target.value)}
                     ></Form.Control>
                 </InputGroup>
-                <InputGroup>
+                <InputGroup size="sm">
                     <InputGroup.Text className="w-25" column="sm">
                         Points
                     </InputGroup.Text>

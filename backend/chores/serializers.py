@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Chore
+from .models import Chore, Assignment
 
 
 class ChoreSerializer(serializers.ModelSerializer):
@@ -10,3 +10,12 @@ class ChoreSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return Chore.objects.create(**validated_data)
+
+
+class AssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assignment
+        fields = ["id", "user", "chore", "completed"]
+
+        def create(self, validated_data):
+            return Assignment.objects.create(**validated_data)

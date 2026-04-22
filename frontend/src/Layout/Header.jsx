@@ -42,9 +42,9 @@ export default function Header() {
                         <Button
                             className="px-3 bg-secondary"
                             size="sm"
-                            onClick={() => navigate('/create-chore')}
+                            onClick={() => navigate('/register')}
                         >
-                            Add task
+                            Register
                         </Button>
                     )}
                     <Button

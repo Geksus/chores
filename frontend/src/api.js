@@ -7,6 +7,17 @@ function authHeaders() {
     return token ? { Authorization: `Token ${token}` } : {}
 }
 
+export async function addUser(username, password, email, is_child, first_name, last_name) {
+    return await axios.post(`${API_URL}/accounts/register/`, {
+        username,
+        password,
+        email,
+        is_child,
+        first_name,
+        last_name,
+    })
+}
+
 export async function login(username, password) {
     const response = await axios.post(`${API_URL}/accounts/login/`, {
         username,
@@ -27,23 +38,21 @@ export async function logout() {
     return response
 }
 
-export async function getUsers() {
-    const response = await axios.get(`${API_URL}/accounts/users/`, {
+export async function fetchUsers() {
+    return await axios.get(`${API_URL}/accounts/users/`, {
         headers: authHeaders(),
     })
-    return response.data
 }
 
 export async function fetchChores() {
-    const response = await axios.get(`${API_URL}/chores/`, {
+    return await axios.get(`${API_URL}/chores`, {
         headers: authHeaders(),
     })
-    return response
 }
 
 export async function createChore(title, description, base_points) {
     return await axios.post(
-        `${API_URL}/chores/create/`,
+        `${API_URL}/create-chore/`,
         {
             title,
             description,
@@ -54,7 +63,24 @@ export async function createChore(title, description, base_points) {
 }
 
 export async function deleteChore(pk) {
-    return axios.delete(`${API_URL}/chores/delete/${pk}/`, {
+    return axios.delete(`${API_URL}/delete/${pk}/`, {
+        headers: authHeaders(),
+    })
+}
+
+export async function createAssignment(user, chore) {
+    return axios.post(
+        `${API_URL}/create-assignment/`,
+        {
+            user,
+            chore,
+        },
+        { headers: authHeaders() }
+    )
+}
+
+export async function fetchAssignments() {
+    return axios.get(`${API_URL}/assignments/`, {
         headers: authHeaders(),
     })
 }
