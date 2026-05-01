@@ -17,5 +17,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
         model = Assignment
         fields = ["id", "user", "chore", "completed"]
 
-        def create(self, validated_data):
-            return Assignment.objects.create(**validated_data)
+    def update(self, instance, validated_data):
+        instance.completed = not instance.completed
+        instance.save()
+        return instance
