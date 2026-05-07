@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../api.js'
-import { useUser } from '../context/UserContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 
 export default function Login() {
-    const { setUserData } = useUser()
+    const { setUserData } = useAuth()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)

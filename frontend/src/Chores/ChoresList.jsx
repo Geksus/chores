@@ -4,12 +4,15 @@ import { Accordion, Container, Form, Table } from 'react-bootstrap'
 import Chore from './Chore.jsx'
 import CreateChore from './CreateChore.jsx'
 import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 
 export default function ChoresList() {
     const [chores, setChores] = useState([])
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [activeKey, setActiveKey] = useState('1')
+
+    const { userData } = useAuth()
 
     async function getChores() {
         setIsLoading(true)
@@ -60,7 +63,7 @@ export default function ChoresList() {
                             <th>Title</th>
                             <th>Description</th>
                             <th>Points</th>
-                            <th></th>
+                            {!userData.is_child && <th></th>}
                         </tr>
                     </thead>
                     <tbody>

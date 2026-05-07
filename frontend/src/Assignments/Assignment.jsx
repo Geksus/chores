@@ -23,7 +23,7 @@ export default function Assignment({
     }
 
     function isCompleted() {
-        if (userData.is_child === true) {
+        if (userData?.is_child === true) {
             return completed ? (
                 'Yes'
             ) : (

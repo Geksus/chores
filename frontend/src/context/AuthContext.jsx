@@ -1,29 +1,18 @@
-import { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { createContext, useContext, useState } from 'react'
 
-export const AuthContext = createContext();
+const AuthContext = createContext()
 
-export const AuthProvider = ({ children }) => {
-    const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        // On mount, check if tokens exist in localStorage
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            try {
-                const decoded = jwtDecode(token);
-                setUserData(decoded);
-            } catch (e) {
-                localStorage.removeItem('access_token');
-            }
-        }
-        setLoading(false);
-    }, []);
+export function AuthProvider({ children }) {
+    const stored = localStorage.getItem('user')
+    const [userData, setUserData] = useState(stored ? JSON.parse(stored) : undefined)
 
     return (
-        <AuthContext.Provider value={{ userData, setUserData, loading }}>
-            {!loading && children}
+        <AuthContext.Provider value={{ userData, setUserData }}>
+            {children}
         </AuthContext.Provider>
-    );
-};
+    )
+}
+
+export function useAuth() {
+    return useContext(AuthContext)
+}
