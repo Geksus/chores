@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
+import { Container, Form, Table } from 'react-bootstrap'
 import { fetchChores } from '../api.js'
-import { Accordion, Container, Form, Table } from 'react-bootstrap'
 import Chore from './Chore.jsx'
 import CreateChore from './CreateChore.jsx'
 import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'

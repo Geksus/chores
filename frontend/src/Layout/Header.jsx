@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { logout } from '../api.js'
-import { useUser } from '../context/UserContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 
 export default function Header() {
-    const { userData, setUserData } = useUser()
+    const { userData, setUserData } = useAuth()
     const navigate = useNavigate()
 
     async function handleLogout() {

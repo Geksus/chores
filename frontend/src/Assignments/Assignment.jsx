@@ -1,7 +1,7 @@
-import { useUser } from '../context/UserContext.jsx'
 import { Button } from 'react-bootstrap'
 
 import { completeAssignment, deleteAssignment } from '../api.js'
+import { useAuth } from '../context/AuthContext.jsx'
 
 export default function Assignment({
     id,
@@ -11,7 +11,7 @@ export default function Assignment({
     setError,
     getAssignments,
 }) {
-    const { userData } = useUser()
+    const { userData } = useAuth()
 
     async function finishAssignment(id) {
         try {
