@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Accordion, Card, Container, Form, Table } from 'react-bootstrap'
-import {
-    completeAssignment,
-    deleteAssignment,
-    fetchAssignments,
-    fetchChores,
-    fetchUsers,
-} from '../api.js'
+import { Container, Form, Table } from 'react-bootstrap'
+import { fetchAssignments, fetchChores, fetchUsers } from '../api.js'
 import CreateAssignment from './CreateAssignment.jsx'
 import Assignment from './Assignment.jsx'
 import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'
@@ -17,7 +11,7 @@ export default function AssignmentsList() {
     const [assignments, setAssignments] = useState([])
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [activeKey, setActiveKey] = useState('0')
+    const [activeKey, setActiveKey] = useState('1')
 
     async function getAssignments() {
         setIsLoading(true)
@@ -56,26 +50,6 @@ export default function AssignmentsList() {
         } finally {
             setIsLoading(false)
         }
-    }
-
-    async function finishAssignment(id) {
-        try {
-            const response = await completeAssignment(id)
-            await getAssignments()
-
-            console.log(response.status)
-        } catch (error) {
-            setError(error.message)
-        }
-    }
-
-    async function cleanUp() {
-        for (let ass of assignments) {
-            if (ass.completed) {
-                await deleteAssignment(ass.id)
-            }
-        }
-        await getAssignments()
     }
 
     useEffect(() => {
@@ -127,11 +101,9 @@ export default function AssignmentsList() {
                                 <tr
                                     key={assignment.id}
                                     style={{ cursor: 'pointer' }}
-                                    onClick={() =>
-                                        finishAssignment(assignment.id)
-                                    }
                                 >
                                     <Assignment
+                                        id={assignment.id}
                                         user={
                                             users?.find(
                                                 (user) =>
@@ -146,6 +118,8 @@ export default function AssignmentsList() {
                                             )?.title
                                         }
                                         completed={assignment.completed}
+                                        setError={setError}
+                                        getAssignments={getAssignments}
                                     />
                                 </tr>
                             ))}

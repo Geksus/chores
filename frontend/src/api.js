@@ -92,10 +92,14 @@ export async function fetchAssignments() {
     })
 }
 
-export function completeAssignment(pk) {
-    return axios.patch(`${API_URL}/update-assignment/${pk}/`, null, {
-        headers: authHeaders(),
-    })
+export function completeAssignment(pk, state) {
+    return axios.patch(
+        `${API_URL}/update-assignment/${pk}/`,
+        { completed: state },
+        {
+            headers: authHeaders(),
+        }
+    )
 }
 
 export function deleteAssignment(pk) {

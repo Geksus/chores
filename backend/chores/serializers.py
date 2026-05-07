@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from .models import Chore, Assignment
@@ -15,9 +16,14 @@ class ChoreSerializer(serializers.ModelSerializer):
 class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
-        fields = ["id", "user", "chore", "completed"]
+        fields = "__all__"
 
     def update(self, instance, validated_data):
-        instance.completed = not instance.completed
+        if validated_data.get("completed"):
+            instance.completed = True
+            instance.completed_at = timezone.now()
+        else:
+            instance.completed = False
+            instance.completed_at = None
         instance.save()
         return instance

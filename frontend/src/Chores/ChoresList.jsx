@@ -9,6 +9,7 @@ export default function ChoresList() {
     const [chores, setChores] = useState([])
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [activeKey, setActiveKey] = useState('1')
 
     async function getChores() {
         setIsLoading(true)
@@ -42,7 +43,14 @@ export default function ChoresList() {
                 </div>
             )}
             <CustomAccordion
-                component={<CreateChore getChores={getChores} />}
+                activeKey={activeKey}
+                setActiveKey={setActiveKey}
+                component={
+                    <CreateChore
+                        getChores={getChores}
+                        setActiveKey={setActiveKey}
+                    />
+                }
             />
             {isLoading && <span>Loading...</span>}
             {!isLoading && chores?.length > 0 && (
