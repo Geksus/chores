@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap'
+import { Button, DropdownButton, Dropdown } from 'react-bootstrap'
 
 import { completeAssignment, deleteAssignment, updateUser } from '../api.js'
 import { useAuth } from '../Context/AuthContext.jsx'
@@ -70,7 +70,7 @@ export default function Assignment({
                 <span>{chore.title}</span>
             </td>
             <td
-                style={{ width: '360px' }}
+                style={{ width: '200px' }}
                 className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
             >
                 {isCompleted()}
@@ -104,23 +104,29 @@ function CompletionConfirmation({
     }
 
     return (
-        <div className="d-flex justify-content-evenly">
-            <Button
+        <DropdownButton
+            size="sm"
+            variant="warning"
+            align="end"
+            title="Confirm?"
+        >
+            <Dropdown.Item
+                as="button"
                 onClick={cleanUp}
-                variant="success"
                 size="sm"
-                className="border-1 border-white w-25"
+                className="bg-success"
             >
                 Confirm
-            </Button>
-            <Button
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item
+                as="button"
                 onClick={unFinishAssignment}
-                variant="danger"
                 size="sm"
-                className="border-1 border-white w-25"
+                className="bg-danger"
             >
                 Cancel
-            </Button>
-        </div>
+            </Dropdown.Item>
+        </DropdownButton>
     )
 }

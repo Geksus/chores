@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { fetchUsers } from '../api.js'
-import { Container, Table } from 'react-bootstrap'
+import { fetchUsers, updateUser } from '../api.js'
+import { Button, Container, Table } from 'react-bootstrap'
 
 export default function UsersList() {
     const [users, setUsers] = useState([])
@@ -19,6 +19,15 @@ export default function UsersList() {
             setErrorMessage(error.message)
         } finally {
             setIsLoading(false)
+        }
+    }
+
+    async function resetPoints(pk, points) {
+        try {
+            await updateUser(pk, points)
+            await getUsers()
+        } catch (error) {
+            setErrorMessage(error.message)
         }
     }
 
@@ -46,6 +55,7 @@ export default function UsersList() {
                             <th>Name</th>
                             <th>Family name</th>
                             <th>Points</th>
+                            <th></th>
                         </tr>
                     </thead>
                     {users?.length > 0 && (
@@ -56,6 +66,17 @@ export default function UsersList() {
                                     <td>{user.first_name}</td>
                                     <td>{user.last_name}</td>
                                     <td>{user.points}</td>
+                                    <td>
+                                        <Button
+                                            size="sm"
+                                            variant="danger"
+                                            onClick={() =>
+                                                resetPoints(user.id, 0)
+                                            }
+                                        >
+                                            Reset
+                                        </Button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
