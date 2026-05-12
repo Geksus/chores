@@ -1,7 +1,9 @@
 import { Button } from 'react-bootstrap'
 import { deleteChore } from '../api.js'
+import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function Chore({ data, setIsLoading, setError }) {
+    const { userData } = useAuth()
     async function destroyChore(id) {
         setIsLoading(true)
         try {
@@ -24,15 +26,17 @@ export default function Chore({ data, setIsLoading, setError }) {
             <td>{data.title}</td>
             <td>{data.description}</td>
             <td>{data.base_points}</td>
-            <td>
-                <Button
-                    size="sm"
-                    variant="danger"
-                    onClick={() => destroyChore(data.id)}
-                >
-                    Delete
-                </Button>
-            </td>
+            {!userData.is_child && (
+                <td>
+                    <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => destroyChore(data.id)}
+                    >
+                        Delete
+                    </Button>
+                </td>
+            )}
         </tr>
     )
 }

@@ -37,3 +37,23 @@ class AssignmentCreateView(generics.CreateAPIView):
 
     model = Assignment
     serializer_class = AssignmentSerializer
+
+
+class AssignmentUpdateView(generics.UpdateAPIView):
+    authentication_classes = []
+    permission_classes = []
+
+    queryset = Assignment.objects.all()
+    serializer_class = AssignmentSerializer
+    lookup_field = "pk"
+    http_method_names = ["patch"]
+
+
+class AssignmentDeleteView(generics.DestroyAPIView):
+    authentication_classes = []
+    permission_classes = []
+
+    queryset = Assignment.objects.all()
+    serializer_class = AssignmentSerializer
+    lookup_field = "pk"
+    http_method_names = ["delete"]

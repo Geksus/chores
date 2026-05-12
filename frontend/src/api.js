@@ -7,7 +7,14 @@ function authHeaders() {
     return token ? { Authorization: `Token ${token}` } : {}
 }
 
-export async function addUser(username, password, email, is_child, first_name, last_name) {
+export async function addUser(
+    username,
+    password,
+    email,
+    is_child,
+    first_name,
+    last_name
+) {
     return await axios.post(`${API_URL}/accounts/register/`, {
         username,
         password,
@@ -83,4 +90,28 @@ export async function fetchAssignments() {
     return axios.get(`${API_URL}/assignments/`, {
         headers: authHeaders(),
     })
+}
+
+export function completeAssignment(pk, state) {
+    return axios.patch(
+        `${API_URL}/update-assignment/${pk}/`,
+        { completed: state },
+        {
+            headers: authHeaders(),
+        }
+    )
+}
+
+export function deleteAssignment(pk) {
+    return axios.delete(`${API_URL}/delete-assignment/${pk}/`, {
+        headers: authHeaders(),
+    })
+}
+
+export function updateUser(pk, points) {
+    return axios.patch(
+        `${API_URL}/accounts/update/${pk}/`,
+        { points },
+        { headers: authHeaders() }
+    )
 }

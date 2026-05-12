@@ -1,13 +1,18 @@
-import {useEffect, useState} from 'react'
-import {fetchChores} from '../api.js'
-import { Accordion, Container, Form, Table } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import { Container, Form, Table } from 'react-bootstrap'
+import { fetchChores } from '../api.js'
 import Chore from './Chore.jsx'
 import CreateChore from './CreateChore.jsx'
+import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'
+import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function ChoresList() {
     const [chores, setChores] = useState([])
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [activeKey, setActiveKey] = useState('1')
+
+    const { userData } = useAuth()
 
     async function getChores() {
         setIsLoading(true)
@@ -40,14 +45,17 @@ export default function ChoresList() {
                     <Form.Control value={error} disabled></Form.Control>
                 </div>
             )}
-            <Accordion defaultActiveKey="0" flush className="mb-3 w-75">
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Create chore</Accordion.Header>
-                    <Accordion.Body>
-                        <CreateChore getChores={getChores}/>
-                    </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
+            <CustomAccordion
+                activeKey={activeKey}
+                setActiveKey={setActiveKey}
+                title="Chores"
+                component={
+                    <CreateChore
+                        getChores={getChores}
+                        setActiveKey={setActiveKey}
+                    />
+                }
+            />
             {isLoading && <span>Loading...</span>}
             {!isLoading && chores?.length > 0 && (
                 <Table striped bordered hover size="sm" className="w-75">
@@ -56,18 +64,19 @@ export default function ChoresList() {
                             <th>Title</th>
                             <th>Description</th>
                             <th>Points</th>
-                            <th></th>
+                            {!userData.is_child && <th></th>}
                         </tr>
                     </thead>
                     <tbody>
-                        {chores.map((c) => (
-                            <Chore
-                                key={c.id}
-                                data={c}
-                                setIsLoading={setIsLoading}
-                                setError={setError}
-                            />
-                        ))}
+                        {Array.isArray(chores) &&
+                            chores?.map((c) => (
+                                <Chore
+                                    key={c.id}
+                                    data={c}
+                                    setIsLoading={setIsLoading}
+                                    setError={setError}
+                                />
+                            ))}
                     </tbody>
                 </Table>
             )}

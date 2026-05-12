@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users.models import User
-from users.serializers import UserCreateSerializer, UserListSerializer
+from users.serializers import UserCreateSerializer, UserListSerializer, UserUpdateSerializer
 
 
 class SignUpView(generics.CreateAPIView):
@@ -18,6 +18,16 @@ class SignUpView(generics.CreateAPIView):
 class UsersListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserListSerializer
+
+
+class UserUpdateView(generics.UpdateAPIView):
+    authentication_classes = []
+    permission_classes = []
+
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+    lookup_field = "pk"
+    http_method_names = ["patch"]
 
 
 class CustomLoginView(APIView):

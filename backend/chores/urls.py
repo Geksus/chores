@@ -6,6 +6,8 @@ from .views import (
     ChoreDeleteView,
     AssignmentCreateView,
     AssignmentListView,
+    AssignmentDeleteView,
+    AssignmentUpdateView,
 )
 
 app_name = "chores"
@@ -17,5 +19,15 @@ urlpatterns = [
     path("assignments/", AssignmentListView.as_view(), name="assignment_list"),
     path(
         "create-assignment/", AssignmentCreateView.as_view(), name="create_assignment"
+    ),
+    path(
+        "delete-assignment/<int:pk>/",
+        AssignmentDeleteView.as_view(),
+        name="delete_assignment",
+    ),
+    path(
+        "update-assignment/<int:pk>/",
+        AssignmentUpdateView.as_view(),
+        name="update_assignment",
     ),
 ]

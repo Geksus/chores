@@ -1,9 +1,15 @@
-import {useEffect, useState} from 'react'
-import {createChore} from '../api.js'
-import {Button, Container, Form, FormControl, InputGroup,} from 'react-bootstrap'
-import {errorTimeout} from '../utils/utils.js'
+import { useEffect, useState } from 'react'
+import { createChore } from '../api.js'
+import {
+    Button,
+    Container,
+    Form,
+    FormControl,
+    InputGroup,
+} from 'react-bootstrap'
+import { errorTimeout } from '../utils/utils.js'
 
-export default function CreateChore({getChores}) {
+export default function CreateChore({ getChores, setActiveKey }) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [base_points, setBase_points] = useState(0)
@@ -21,6 +27,7 @@ export default function CreateChore({getChores}) {
             setDescription('')
             setBase_points(0)
             getChores()
+            setActiveKey(null)
         } catch (error) {
             setError(error.message)
         } finally {

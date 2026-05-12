@@ -45,7 +45,7 @@ export default function SignUp() {
         <Container className="d-flex justify-content-center align-items-center mt-5">
             <Row>
                 <Col className="d-flex flex-column align-items-center">
-                    <h3>Add usersws</h3>
+                    <h3>Add user</h3>
                     <Form>
                         <Form.Group
                             className="mb-3"

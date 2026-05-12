@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Kyiv"
 
 USE_I18N = True
 
@@ -120,6 +120,7 @@ USE_TZ = True
 # CORS configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:3003",
 ]
 CORS_ALLOW_CREDENTIALS = True
 

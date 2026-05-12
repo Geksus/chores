@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { logout } from '../api.js'
-import { useUser } from '../context/UserContext.jsx'
+import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function Header() {
-    const { userData, setUserData } = useUser()
+    const { userData, setUserData } = useAuth()
     const navigate = useNavigate()
 
     async function handleLogout() {
@@ -37,6 +37,13 @@ export default function Header() {
                         onClick={() => navigate('/chores')}
                     >
                         Chores
+                    </Button>
+                    <Button
+                        className="px-3 bg-secondary"
+                        size="sm"
+                        onClick={() => navigate('/users')}
+                    >
+                        Users
                     </Button>
                     {!userData?.is_child && (
                         <Button
