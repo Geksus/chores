@@ -63,7 +63,7 @@ export default function AssignmentsList() {
     }, [error])
 
     return (
-        <Container className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center">
             {error !== '' && (
                 <div className="my-2 w-75">
                     <Form.Control
@@ -88,7 +88,7 @@ export default function AssignmentsList() {
             />
             {isLoading && <span>Loading...</span>}
             {!isLoading && assignments?.length > 0 && (
-                <Table striped bordered hover size="sm" className="w-75">
+                <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
                             <th>User</th>
@@ -122,6 +122,6 @@ export default function AssignmentsList() {
                     </tbody>
                 </Table>
             )}
-        </Container>
+        </div>
     )
 }

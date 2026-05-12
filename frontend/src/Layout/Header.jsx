@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+import { Button, DropdownButton, Dropdown } from 'react-bootstrap'
 import { logout } from '../api.js'
 import { useAuth } from '../Context/AuthContext.jsx'
 
@@ -23,52 +23,27 @@ export default function Header() {
                         Hello, {userData?.name || userData?.username}
                     </span>
                 )}
-                <div className="d-flex gap-2 px-3">
-                    <Button
-                        className="px-3 bg-secondary"
-                        size="sm"
-                        onClick={() => navigate('/')}
-                    >
-                        Home
-                    </Button>
-                    <Button
-                        className="px-3 bg-secondary"
-                        size="sm"
-                        onClick={() => navigate('/chores')}
-                    >
-                        Chores
-                    </Button>
-                    <Button
-                        className="px-3 bg-secondary"
-                        size="sm"
-                        onClick={() => navigate('/users')}
-                    >
-                        Users
-                    </Button>
-                    {!userData?.is_child && (
-                        <Button
-                            className="px-3 bg-secondary"
-                            size="sm"
-                            onClick={() => navigate('/register')}
-                        >
-                            Register
-                        </Button>
+                <DropdownButton
+                    size="sm"
+                    variant="secondary"
+                    align="end"
+                    title="Menu"
+                >
+                    <Dropdown.Item href="/">Home</Dropdown.Item>
+                    <Dropdown.Item href="/chores">Chores</Dropdown.Item>
+                    <Dropdown.Item href="/users">Users</Dropdown.Item>
+                    {!userData.is_child && (
+                        <Dropdown.Item href="/register">Add user</Dropdown.Item>
                     )}
-                    <Button
-                        className="px-3"
-                        variant="dark"
-                        size="sm"
-                        onClick={
-                            userData?.name || userData?.username
-                                ? handleLogout
-                                : navigate('/login')
-                        }
-                    >
-                        {userData?.name || userData?.username
-                            ? 'Logout'
-                            : 'Login'}
-                    </Button>
-                </div>
+                    <Dropdown.Divider />
+                    {userData.username ? (
+                        <Dropdown.Item as="button" onClick={handleLogout}>
+                            Logout
+                        </Dropdown.Item>
+                    ) : (
+                        <Dropdown.Item href="/login">Login</Dropdown.Item>
+                    )}
+                </DropdownButton>
             </header>
         </>
     )
