@@ -12,6 +12,7 @@ mypy_extensions==1.1.0
 packaging==26.1
 pathspec==1.0.4
 platformdirs==4.9.6
+python-decouple==3.8
 pytokens==0.4.1
 sqlparse==0.5.5
 types-PyYAML==6.0.12.20260408
