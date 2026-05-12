@@ -76,6 +76,7 @@ export default function AssignmentsList() {
             <CustomAccordion
                 activeKey={activeKey}
                 setActiveKey={setActiveKey}
+                title="Assignments"
                 component={
                     <CreateAssignment
                         users={users}
@@ -104,19 +105,14 @@ export default function AssignmentsList() {
                                 >
                                     <Assignment
                                         id={assignment.id}
-                                        user={
-                                            users?.find(
-                                                (user) =>
-                                                    user.id === assignment.user
-                                            )?.first_name
-                                        }
-                                        chore={
-                                            chores?.find(
-                                                (chore) =>
-                                                    chore.id ===
-                                                    assignment.chore
-                                            )?.title
-                                        }
+                                        user={users?.find(
+                                            (user) =>
+                                                user.id === assignment.user
+                                        )}
+                                        chore={chores?.find(
+                                            (chore) =>
+                                                chore.id === assignment.chore
+                                        )}
                                         completed={assignment.completed}
                                         setError={setError}
                                         getAssignments={getAssignments}

@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap'
 import { deleteChore } from '../api.js'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function Chore({ data, setIsLoading, setError }) {
     const { userData } = useAuth()

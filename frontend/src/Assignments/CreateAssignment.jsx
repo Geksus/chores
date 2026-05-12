@@ -73,7 +73,7 @@ export default function CreateAssignment({
                         {Array.isArray(chores) &&
                             chores?.map((chore) => (
                                 <option key={chore.id} value={chore.id}>
-                                    {chore.title}
+                                    {`${chore.title} | ${chore.description}`}
                                 </option>
                             ))}
                     </Form.Select>

@@ -107,3 +107,11 @@ export function deleteAssignment(pk) {
         headers: authHeaders(),
     })
 }
+
+export function updateUser(pk, points) {
+    return axios.patch(
+        `${API_URL}/accounts/update/${pk}/`,
+        { points },
+        { headers: authHeaders() }
+    )
+}

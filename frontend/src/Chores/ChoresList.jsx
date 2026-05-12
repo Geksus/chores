@@ -4,7 +4,7 @@ import { fetchChores } from '../api.js'
 import Chore from './Chore.jsx'
 import CreateChore from './CreateChore.jsx'
 import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function ChoresList() {
     const [chores, setChores] = useState([])
@@ -48,6 +48,7 @@ export default function ChoresList() {
             <CustomAccordion
                 activeKey={activeKey}
                 setActiveKey={setActiveKey}
+                title="Chores"
                 component={
                     <CreateChore
                         getChores={getChores}

@@ -5,13 +5,14 @@ export default function CustomAccordion({
     component,
     activeKey,
     setActiveKey,
+    title,
 }) {
     return (
         <Accordion activeKey={activeKey} flush className="mb-3 w-75">
             <Card className="border-0">
                 <div className="d-flex justify-content-between bg-secondary-subtle">
                     <span className="ms-1 d-flex flex-column justify-content-center align-items-center fw-bold">
-                        Assignments
+                        {title}
                     </span>
                     <CustomToggle
                         eventKey="0"

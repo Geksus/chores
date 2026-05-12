@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap'
 
-import { completeAssignment, deleteAssignment } from '../api.js'
-import { useAuth } from '../context/AuthContext.jsx'
+import { completeAssignment, deleteAssignment, updateUser } from '../api.js'
+import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function Assignment({
     id,
@@ -42,6 +42,8 @@ export default function Assignment({
                 id={id}
                 setError={setError}
                 getAssignments={getAssignments}
+                userId={user.id}
+                chorePoints={chore.base_points}
             />
         ) : (
             <Button
@@ -60,12 +62,12 @@ export default function Assignment({
             <td
                 className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
             >
-                <span>{user}</span>
+                <span>{user.first_name}</span>
             </td>
             <td
                 className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
             >
-                <span>{chore}</span>
+                <span>{chore.title}</span>
             </td>
             <td
                 style={{ width: '360px' }}
@@ -77,7 +79,15 @@ export default function Assignment({
     )
 }
 
-function CompletionConfirmation({ id, setError, getAssignments }) {
+function CompletionConfirmation({
+    id,
+    setError,
+    getAssignments,
+    userId,
+    chorePoints,
+}) {
+    console.log(userId, chorePoints)
+
     async function unFinishAssignment() {
         try {
             await completeAssignment(id, false)
@@ -89,6 +99,7 @@ function CompletionConfirmation({ id, setError, getAssignments }) {
 
     async function cleanUp() {
         await deleteAssignment(id)
+        await updateUser(userId, chorePoints)
         await getAssignments()
     }
 

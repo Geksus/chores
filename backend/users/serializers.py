@@ -29,4 +29,16 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email", "first_name", "last_name", "is_child"]
+        fields = ["id", "username", "email", "first_name", "last_name", "is_child", "points"]
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["points"]
+
+    def update(self, instance, validated_data):
+        if validated_data.get("points"):
+            instance.points += validated_data["points"]
+        instance.save()
+        return instance

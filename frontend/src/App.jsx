@@ -1,6 +1,6 @@
 import './App.css'
-import { UserProvider } from './context/UserContext.jsx'
-import { AuthProvider } from './context/AuthContext.jsx'
+import { UserProvider } from './Context/UserContext.jsx'
+import { AuthProvider } from './Context/AuthContext.jsx'
 import RouteList from './RouteList/RouteList.jsx'
 
 function App() {
