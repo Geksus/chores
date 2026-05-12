@@ -39,7 +39,7 @@ export default function ChoresList() {
     }, [error])
 
     return (
-        <Container className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center">
             {error !== '' && (
                 <div>
                     <Form.Control value={error} disabled></Form.Control>
@@ -58,7 +58,7 @@ export default function ChoresList() {
             />
             {isLoading && <span>Loading...</span>}
             {!isLoading && chores?.length > 0 && (
-                <Table striped bordered hover size="sm" className="w-75">
+                <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -80,6 +80,6 @@ export default function ChoresList() {
                     </tbody>
                 </Table>
             )}
-        </Container>
+        </div>
     )
 }
