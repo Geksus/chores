@@ -101,7 +101,7 @@ export default function AssignmentsList() {
                             assignments.map((assignment) => (
                                 <tr
                                     key={assignment.id}
-                                    style={{ cursor: 'pointer' }}
+                                    className="clickable-row"
                                 >
                                     <Assignment
                                         id={assignment.id}
