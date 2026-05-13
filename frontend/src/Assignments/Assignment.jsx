@@ -81,8 +81,6 @@ function CompletionConfirmation({
     userId,
     chorePoints,
 }) {
-    console.log(userId, chorePoints)
-
     async function unFinishAssignment() {
         try {
             await completeAssignment(id, false)

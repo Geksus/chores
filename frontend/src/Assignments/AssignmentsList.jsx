@@ -117,6 +117,7 @@ export default function AssignmentsList() {
                                                     chore.id ===
                                                     assignment.chore
                                             )}
+                                            user={user}
                                             completed={assignment.completed}
                                             setError={setError}
                                             getAssignments={getAssignments}
