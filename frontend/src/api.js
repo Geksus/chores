@@ -111,7 +111,15 @@ export function deleteAssignment(pk) {
 export function updateUser(pk, points) {
     return axios.patch(
         `${API_URL}/accounts/update/${pk}/`,
-        { points },
+        { points: points },
+        { headers: authHeaders() }
+    )
+}
+
+export function resetUserPoints(pk) {
+    return axios.patch(
+        `${API_URL}/accounts/update/${pk}/`,
+        { reset_points: true },
         { headers: authHeaders() }
     )
 }

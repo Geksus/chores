@@ -9,8 +9,8 @@ export default function CustomAccordion({
 }) {
     return (
         <Accordion activeKey={activeKey} flush className="mb-3 w-100">
-            <Card className="border-0">
-                <div className="d-flex justify-content-between bg-secondary-subtle">
+            <Card className="border-0" style={{ background: 'transparent' }}>
+                <div className="accordion-header">
                     <span className="ms-1 d-flex flex-column justify-content-center align-items-center fw-bold">
                         {title}
                     </span>

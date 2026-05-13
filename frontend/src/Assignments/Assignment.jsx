@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap'
+import { Button, DropdownButton, Dropdown } from 'react-bootstrap'
 
 import { completeAssignment, deleteAssignment, updateUser } from '../api.js'
 import { useAuth } from '../Context/AuthContext.jsx'
@@ -60,18 +60,13 @@ export default function Assignment({
     return (
         <>
             <td
-                className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
+                className={`text-start align-middle ps-2 ${completed ? 'bg-success bg-opacity-75' : 'bg-warning bg-opacity-75'}`}
             >
-                <span>{user.first_name}</span>
+                <span>{`${chore.title} | ${chore.description}`}</span>
             </td>
             <td
-                className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
-            >
-                <span>{chore.title}</span>
-            </td>
-            <td
-                style={{ width: '360px' }}
-                className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
+                style={{ width: '200px' }}
+                className={`align-middle ${completed ? 'bg-success bg-opacity-75' : 'bg-warning bg-opacity-75'}`}
             >
                 {isCompleted()}
             </td>
@@ -86,8 +81,6 @@ function CompletionConfirmation({
     userId,
     chorePoints,
 }) {
-    console.log(userId, chorePoints)
-
     async function unFinishAssignment() {
         try {
             await completeAssignment(id, false)
@@ -104,23 +97,29 @@ function CompletionConfirmation({
     }
 
     return (
-        <div className="d-flex justify-content-evenly">
-            <Button
+        <DropdownButton
+            size="sm"
+            variant="warning"
+            align="end"
+            title="Confirm?"
+        >
+            <Dropdown.Item
+                as="button"
                 onClick={cleanUp}
-                variant="success"
                 size="sm"
-                className="border-1 border-white w-25"
+                className="bg-success"
             >
                 Confirm
-            </Button>
-            <Button
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item
+                as="button"
                 onClick={unFinishAssignment}
-                variant="danger"
                 size="sm"
-                className="border-1 border-white w-25"
+                className="bg-danger"
             >
                 Cancel
-            </Button>
-        </div>
+            </Dropdown.Item>
+        </DropdownButton>
     )
 }
