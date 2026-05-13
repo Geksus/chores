@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Container, Form, Table } from 'react-bootstrap'
+import { Form, Table } from 'react-bootstrap'
 import { fetchAssignments, fetchChores, fetchUsers } from '../api.js'
 import CreateAssignment from './CreateAssignment.jsx'
 import Assignment from './Assignment.jsx'
@@ -89,41 +89,44 @@ export default function AssignmentsList() {
                 }
             />
             {isLoading && <span>Loading...</span>}
-            {!isLoading && assignments?.length > 0 && (
-                <Table striped bordered hover size="sm">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Title</th>
-                            <th>Completed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {assignments.length > 0 &&
-                            assignments.map((assignment) => (
-                                <tr
-                                    key={assignment.id}
-                                    className="clickable-row"
-                                >
-                                    <Assignment
-                                        id={assignment.id}
-                                        user={users?.find(
-                                            (user) =>
-                                                user.id === assignment.user
-                                        )}
-                                        chore={chores?.find(
-                                            (chore) =>
-                                                chore.id === assignment.chore
-                                        )}
-                                        completed={assignment.completed}
-                                        setError={setError}
-                                        getAssignments={getAssignments}
-                                    />
+            {!isLoading &&
+                users.map((user) => {
+                    const userAssignments = assignments.filter(
+                        (a) => a.user === user.id
+                    )
+                    if (userAssignments.length === 0) return null
+                    return (
+                        <Table key={user.id} striped bordered hover size="sm">
+                            <thead>
+                                <tr>
+                                    <th colSpan={3} className="text-start ps-2">
+                                        {user.first_name}
+                                    </th>
                                 </tr>
-                            ))}
-                    </tbody>
-                </Table>
-            )}
+                            </thead>
+                            <tbody>
+                                {userAssignments.map((assignment) => (
+                                    <tr
+                                        key={assignment.id}
+                                        className="clickable-row"
+                                    >
+                                        <Assignment
+                                            id={assignment.id}
+                                            chore={chores?.find(
+                                                (chore) =>
+                                                    chore.id ===
+                                                    assignment.chore
+                                            )}
+                                            completed={assignment.completed}
+                                            setError={setError}
+                                            getAssignments={getAssignments}
+                                        />
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    )
+                })}
         </div>
     )
 }
