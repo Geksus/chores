@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Container, Form, InputGroup } from 'react-bootstrap'
 import { createAssignment } from '../api.js'
 
-export default function CreateAssignment({
-    users,
-    chores,
-    getAssignments,
-    setActiveKey,
-}) {
+export default function CreateAssignment({ users, chores, getAssignments }) {
     const [assignee, setAssignee] = useState(0)
     const [task, setTask] = useState(0)
     const [error, setError] = useState('')
@@ -17,7 +12,6 @@ export default function CreateAssignment({
         try {
             await createAssignment(assignee, task)
             getAssignments()
-            setActiveKey(null)
         } catch (error) {
             setError(error.message)
         }

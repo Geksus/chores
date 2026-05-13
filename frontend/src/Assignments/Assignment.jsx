@@ -60,18 +60,18 @@ export default function Assignment({
     return (
         <>
             <td
-                className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
+                className={`align-middle ${completed ? 'bg-success bg-opacity-75' : 'bg-warning bg-opacity-75'}`}
             >
                 <span>{user.first_name}</span>
             </td>
             <td
-                className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
+                className={`align-middle ${completed ? 'bg-success bg-opacity-75' : 'bg-warning bg-opacity-75'}`}
             >
                 <span>{chore.title}</span>
             </td>
             <td
                 style={{ width: '200px' }}
-                className={`align-middle ${completed ? 'bg-success' : 'bg-warning'}`}
+                className={`align-middle ${completed ? 'bg-success bg-opacity-75' : 'bg-warning bg-opacity-75'}`}
             >
                 {isCompleted()}
             </td>

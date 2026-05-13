@@ -42,18 +42,16 @@ export default function UsersList() {
     }, [errorMessage])
 
     return (
-        <Container fluid>
+        <div className="w-100">
             {isLoading ? (
                 <div className="d-flex flex-column justify-content-center">
                     <span>Loading...</span>
                 </div>
             ) : (
-                <Table>
+                <Table hover>
                     <thead>
                         <tr>
-                            <th>Username</th>
                             <th>Name</th>
-                            <th>Family name</th>
                             <th>Points</th>
                             <th></th>
                         </tr>
@@ -61,10 +59,18 @@ export default function UsersList() {
                     {users?.length > 0 && (
                         <tbody>
                             {users?.map((user) => (
-                                <tr key={user.username}>
-                                    <td>{user.username}</td>
+                                <tr
+                                    className={
+                                        user.points >= 1000
+                                            ? 'users-table pulse'
+                                            : 'users-table'
+                                    }
+                                    key={user.username}
+                                    style={{
+                                        background: `linear-gradient(to right, rgba(80, 245, 39, 0.7) ${Math.min(user.points / 10, 100)}%, rgba(226, 245, 39, 0.7) ${Math.min(user.points / 10, 100)}%)`,
+                                    }}
+                                >
                                     <td>{user.first_name}</td>
-                                    <td>{user.last_name}</td>
                                     <td>{user.points}</td>
                                     <td>
                                         <Button
@@ -83,6 +89,6 @@ export default function UsersList() {
                     )}
                 </Table>
             )}
-        </Container>
+        </div>
     )
 }

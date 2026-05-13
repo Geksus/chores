@@ -4,6 +4,7 @@ import { fetchAssignments, fetchChores, fetchUsers } from '../api.js'
 import CreateAssignment from './CreateAssignment.jsx'
 import Assignment from './Assignment.jsx'
 import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'
+import UsersList from '../Users/UsersList.jsx'
 
 export default function AssignmentsList() {
     const [users, setUsers] = useState([])
@@ -73,6 +74,7 @@ export default function AssignmentsList() {
                     ></Form.Control>
                 </div>
             )}
+            {!isLoading && <UsersList />}
             <CustomAccordion
                 activeKey={activeKey}
                 setActiveKey={setActiveKey}

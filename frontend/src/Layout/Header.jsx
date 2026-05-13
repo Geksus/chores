@@ -17,11 +17,16 @@ export default function Header() {
 
     return (
         <>
-            <header className="d-flex justify-content-between bg-secondary-subtle mb-2">
+            <header>
                 {(userData?.name || userData?.username) && (
-                    <span className="d-flex flex-column justify-content-center px-3">
-                        Hello, {userData?.name || userData?.username}
-                    </span>
+                    <div className="d-flex flex-column justify-content-center px-3">
+                        <span>
+                            Hello,{' '}
+                            <strong>
+                                {userData?.name || userData?.username}
+                            </strong>
+                        </span>
+                    </div>
                 )}
                 <DropdownButton
                     size="sm"

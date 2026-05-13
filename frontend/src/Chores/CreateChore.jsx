@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap'
 import { errorTimeout } from '../utils/utils.js'
 
-export default function CreateChore({ getChores, setActiveKey }) {
+export default function CreateChore({ getChores }) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [base_points, setBase_points] = useState(0)
@@ -27,7 +27,6 @@ export default function CreateChore({ getChores, setActiveKey }) {
             setDescription('')
             setBase_points(0)
             getChores()
-            setActiveKey(null)
         } catch (error) {
             setError(error.message)
         } finally {
