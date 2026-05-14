@@ -22,6 +22,15 @@ export default function Assignment({
         }
     }
 
+    async function removeAssignment(id) {
+        try {
+            await deleteAssignment(id)
+            await getAssignments()
+        } catch (error) {
+            setError(error.message)
+        }
+    }
+
     function isCompleted() {
         if (userData?.is_child === true) {
             return completed ? (
@@ -46,14 +55,24 @@ export default function Assignment({
                 chorePoints={chore.base_points}
             />
         ) : (
-            <Button
-                onClick={() => finishAssignment(id)}
-                variant="secondary"
-                size="sm"
-                className="border-1 border-white"
-            >
-                Complete
-            </Button>
+            <div className="d-flex justify-content-evenly">
+                <Button
+                    onClick={() => finishAssignment(id)}
+                    variant="secondary"
+                    size="sm"
+                    className="border-1 border-white"
+                >
+                    Complete
+                </Button>
+                <Button
+                    onClick={() => removeAssignment(id)}
+                    variant="warning"
+                    size="sm"
+                    className="border-1 border-white"
+                >
+                    Remove
+                </Button>
+            </div>
         )
     }
 
@@ -65,7 +84,7 @@ export default function Assignment({
                 <span>{`${chore.title} | ${chore.description}`}</span>
             </td>
             <td
-                style={{ width: '200px' }}
+                style={{ width: '250px' }}
                 className={`align-middle ${completed ? 'bg-success bg-opacity-75' : 'bg-warning bg-opacity-75'}`}
             >
                 {isCompleted()}

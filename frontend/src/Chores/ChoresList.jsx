@@ -40,6 +40,7 @@ export default function ChoresList() {
 
     return (
         <div className="d-flex flex-column align-items-center">
+            <title>Chores</title>
             {error !== '' && (
                 <div>
                     <Form.Control value={error} disabled></Form.Control>

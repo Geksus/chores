@@ -2,17 +2,23 @@ import { useEffect, useState } from 'react'
 import { fetchUsers, updateUser } from '../api.js'
 import { Button, Container, Table } from 'react-bootstrap'
 
-export default function UsersList() {
-    const [users, setUsers] = useState([])
+export default function UsersList({
+    users: propsUsers,
+    getUsers: propsGetUsers,
+}) {
+    const [internalUsers, setInternalUsers] = useState([])
     const [errorMessage, setErrorMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
-    async function getUsers() {
+    const users = propsUsers || internalUsers
+    const getUsers = propsGetUsers || getInternalUsers
+
+    async function getInternalUsers() {
         try {
             setIsLoading(true)
             const response = await fetchUsers()
             if (response.status === 200 && response.data.length > 0) {
-                setUsers(response.data)
+                setInternalUsers(response.data)
             }
         } catch (error) {
             console.log(error.message)
@@ -32,8 +38,10 @@ export default function UsersList() {
     }
 
     useEffect(() => {
-        getUsers()
-    }, [])
+        if (!propsUsers) {
+            getInternalUsers()
+        }
+    }, [propsUsers])
 
     useEffect(() => {
         if (errorMessage !== '') {
@@ -67,12 +75,12 @@ export default function UsersList() {
                                     }
                                     key={user.username}
                                     style={{
-                                        background: `linear-gradient(to right, rgba(80, 245, 39, 0.7) ${Math.min(user.points / 10, 100)}%, rgba(226, 245, 39, 0.7) ${Math.min(user.points / 10, 100)}%)`,
+                                        background: `linear-gradient(to right, rgba(80, 245, 39, 0.7) ${Math.min(user.points / 10, 100)}%, transparent ${Math.min(user.points / 10, 100)}%)`,
                                     }}
                                 >
                                     <td>{user.first_name}</td>
                                     <td>{user.points}</td>
-                                    <td>
+                                    <td className="text-end">
                                         <Button
                                             size="sm"
                                             variant="danger"
