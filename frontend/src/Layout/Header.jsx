@@ -16,45 +16,39 @@ export default function Header() {
     }
 
     return (
-        <>
-            <header>
-                {(userData?.name || userData?.username) && (
-                    <div className="d-flex flex-column justify-content-center px-3">
-                        <span>
-                            Hello,{' '}
-                            <strong>
-                                {userData?.name || userData?.username}
-                            </strong>
-                        </span>
+        <header>
+            {(userData?.name || userData?.username) && (
+                <div className="d-flex flex-column justify-content-center px-3">
+                    <span>
+                        Hello,{' '}
+                        <strong>{userData?.name || userData?.username}</strong>
+                    </span>
+                </div>
+            )}
+            <DropdownButton
+                size="sm"
+                variant="secondary"
+                align="end"
+                title="Menu"
+            >
+                <Dropdown.Item href="/">Home</Dropdown.Item>
+                <Dropdown.Item href="/chores">Chores</Dropdown.Item>
+
+                {!userData?.is_child && (
+                    <div>
+                        <Dropdown.Item href="/users">Users</Dropdown.Item>
+                        <Dropdown.Item href="/register">Add user</Dropdown.Item>
                     </div>
                 )}
-                <DropdownButton
-                    size="sm"
-                    variant="secondary"
-                    align="end"
-                    title="Menu"
-                >
-                    <Dropdown.Item href="/">Home</Dropdown.Item>
-                    <Dropdown.Item href="/chores">Chores</Dropdown.Item>
-
-                    {!userData.is_child && (
-                        <div>
-                            <Dropdown.Item href="/users">Users</Dropdown.Item>
-                            <Dropdown.Item href="/register">
-                                Add user
-                            </Dropdown.Item>
-                        </div>
-                    )}
-                    <Dropdown.Divider />
-                    {userData.username ? (
-                        <Dropdown.Item as="button" onClick={handleLogout}>
-                            Logout
-                        </Dropdown.Item>
-                    ) : (
-                        <Dropdown.Item href="/login">Login</Dropdown.Item>
-                    )}
-                </DropdownButton>
-            </header>
-        </>
+                <Dropdown.Divider />
+                {userData?.username ? (
+                    <Dropdown.Item as="button" onClick={handleLogout}>
+                        Logout
+                    </Dropdown.Item>
+                ) : (
+                    <Dropdown.Item href="/login">Login</Dropdown.Item>
+                )}
+            </DropdownButton>
+        </header>
     )
 }

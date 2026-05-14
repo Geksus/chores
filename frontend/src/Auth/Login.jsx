@@ -29,35 +29,38 @@ export default function Login() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="login-form">
-            <h1>Sign in</h1>
-            {error && <p className="login-error">{error}</p>}
-            <div className="login-field">
-                <label htmlFor="username">Username</label>
-                <input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    autoFocus
-                    className="login-input"
-                />
-            </div>
-            <div className="login-field">
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="login-input"
-                />
-            </div>
-            <button type="submit" disabled={loading} className="login-btn">
-                {loading ? 'Signing in…' : 'Sign in'}
-            </button>
-        </form>
+        <div>
+            <title>Login</title>
+            <form onSubmit={handleSubmit} className="login-form">
+                <h1>Sign in</h1>
+                {error && <p className="login-error">{error}</p>}
+                <div className="login-field">
+                    <label htmlFor="username">Username</label>
+                    <input
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                        autoFocus
+                        className="login-input"
+                    />
+                </div>
+                <div className="login-field">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="login-input"
+                    />
+                </div>
+                <button type="submit" disabled={loading} className="login-btn">
+                    {loading ? 'Signing in…' : 'Sign in'}
+                </button>
+            </form>
+        </div>
     )
 }

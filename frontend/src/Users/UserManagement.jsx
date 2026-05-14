@@ -8,7 +8,6 @@ export default function UserManagement() {
     const [errorMessage, setErrorMessage] = useState('')
 
     const { userData } = useAuth()
-    console.log(userData)
 
     async function getUsers() {
         try {
@@ -47,7 +46,8 @@ export default function UserManagement() {
     }, [])
 
     return (
-        <div className="w-100 mb-2">
+        <div className="d-flex flex-column align-items-center">
+            <title>Manage users</title>
             {errorMessage !== '' && (
                 <Form className="mb-2">
                     <Form.Control

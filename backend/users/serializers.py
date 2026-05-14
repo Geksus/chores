@@ -38,9 +38,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = ["points"]
 
     def update(self, instance, validated_data):
-        print(validated_data)
         if validated_data.get("points") == 0:
-            print("zero")
             instance.points = 0
         else:
             instance.points += validated_data["points"]

@@ -43,6 +43,7 @@ export default function SignUp() {
 
     return (
         <Container className="d-flex justify-content-center align-items-center mt-5">
+            <title>SignUp</title>
             <Row>
                 <Col className="d-flex flex-column align-items-center">
                     <h3>Add user</h3>

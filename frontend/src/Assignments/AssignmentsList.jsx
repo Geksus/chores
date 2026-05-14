@@ -11,27 +11,30 @@ export default function AssignmentsList() {
     const [chores, setChores] = useState([])
     const [assignments, setAssignments] = useState([])
     const [error, setError] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
     const [activeKey, setActiveKey] = useState('1')
 
     async function getAssignments() {
-        setIsLoading(true)
         try {
-            const response = await fetchAssignments()
-            if (response.status === 200) {
+            const [assignmentsRes, usersRes] = await Promise.all([
+                fetchAssignments(),
+                fetchUsers(),
+            ])
+            if (assignmentsRes.status === 200) {
                 setAssignments(
-                    Array.isArray(response.data) ? response.data : []
+                    Array.isArray(assignmentsRes.data)
+                        ? assignmentsRes.data
+                        : []
                 )
+            }
+            if (usersRes.status === 200) {
+                setUsers(usersRes.data)
             }
         } catch (error) {
             setError(error.message)
-        } finally {
-            setIsLoading(false)
         }
     }
 
     async function getAllData() {
-        setIsLoading(true)
         try {
             const [usersRes, choresRes, assignmentsRes] = await Promise.all([
                 fetchUsers(),
@@ -48,8 +51,6 @@ export default function AssignmentsList() {
                 )
         } catch (error) {
             setError(error.message)
-        } finally {
-            setIsLoading(false)
         }
     }
 
@@ -65,6 +66,7 @@ export default function AssignmentsList() {
 
     return (
         <div className="d-flex flex-column align-items-center">
+            <title>Home</title>
             {error !== '' && (
                 <div className="my-2 w-75">
                     <Form.Control
@@ -74,7 +76,7 @@ export default function AssignmentsList() {
                     ></Form.Control>
                 </div>
             )}
-            {!isLoading && <UsersList />}
+            <UsersList users={users} getUsers={getAssignments} />
             <CustomAccordion
                 activeKey={activeKey}
                 setActiveKey={setActiveKey}
@@ -88,46 +90,43 @@ export default function AssignmentsList() {
                     />
                 }
             />
-            {isLoading && <span>Loading...</span>}
-            {!isLoading &&
-                users.map((user) => {
-                    const userAssignments = assignments.filter(
-                        (a) => a.user === user.id
-                    )
-                    if (userAssignments.length === 0) return null
-                    return (
-                        <Table key={user.id} striped bordered hover size="sm">
-                            <thead>
-                                <tr>
-                                    <th colSpan={3} className="text-start ps-2">
-                                        {user.first_name}
-                                    </th>
+            {users.map((user) => {
+                const userAssignments = assignments.filter(
+                    (a) => a.user === user.id
+                )
+                if (userAssignments.length === 0) return null
+                return (
+                    <Table key={user.id} striped bordered hover size="sm">
+                        <thead>
+                            <tr>
+                                <th colSpan={3} className="text-start ps-2">
+                                    {user.first_name}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {userAssignments.map((assignment) => (
+                                <tr
+                                    key={assignment.id}
+                                    className="clickable-row"
+                                >
+                                    <Assignment
+                                        id={assignment.id}
+                                        chore={chores?.find(
+                                            (chore) =>
+                                                chore.id === assignment.chore
+                                        )}
+                                        user={user}
+                                        completed={assignment.completed}
+                                        setError={setError}
+                                        getAssignments={getAssignments}
+                                    />
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {userAssignments.map((assignment) => (
-                                    <tr
-                                        key={assignment.id}
-                                        className="clickable-row"
-                                    >
-                                        <Assignment
-                                            id={assignment.id}
-                                            chore={chores?.find(
-                                                (chore) =>
-                                                    chore.id ===
-                                                    assignment.chore
-                                            )}
-                                            user={user}
-                                            completed={assignment.completed}
-                                            setError={setError}
-                                            getAssignments={getAssignments}
-                                        />
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                    )
-                })}
+                            ))}
+                        </tbody>
+                    </Table>
+                )
+            })}
         </div>
     )
 }
