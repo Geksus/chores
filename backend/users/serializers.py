@@ -47,3 +47,12 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class UserDeleteView(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+    def delete(self, instance):
+        instance.delete()

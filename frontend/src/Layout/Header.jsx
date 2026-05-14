@@ -36,9 +36,14 @@ export default function Header() {
                 >
                     <Dropdown.Item href="/">Home</Dropdown.Item>
                     <Dropdown.Item href="/chores">Chores</Dropdown.Item>
-                    <Dropdown.Item href="/users">Users</Dropdown.Item>
+
                     {!userData.is_child && (
-                        <Dropdown.Item href="/register">Add user</Dropdown.Item>
+                        <div>
+                            <Dropdown.Item href="/users">Users</Dropdown.Item>
+                            <Dropdown.Item href="/register">
+                                Add user
+                            </Dropdown.Item>
+                        </div>
                     )}
                     <Dropdown.Divider />
                     {userData.username ? (

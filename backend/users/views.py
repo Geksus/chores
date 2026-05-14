@@ -16,7 +16,7 @@ class SignUpView(generics.CreateAPIView):
 
 
 class UsersListView(generics.ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by("first_name")
     serializer_class = UserListSerializer
 
 
@@ -28,6 +28,15 @@ class UserUpdateView(generics.UpdateAPIView):
     serializer_class = UserUpdateSerializer
     lookup_field = "pk"
     http_method_names = ["patch"]
+
+
+class UserDeleteView(generics.DestroyAPIView):
+    authentication_classes = []
+    permission_classes = []
+
+    queryset = User.objects.all()
+    lookup_field = "pk"
+    http_method_names = ["delete"]
 
 
 class CustomLoginView(APIView):
@@ -46,6 +55,7 @@ class CustomLoginView(APIView):
                 {
                     "token": token.key,
                     "username": username,
+                    "id": user_data.id,
                     "name": user_data.first_name,
                     "is_child": user_data.is_child,
                 },

@@ -123,3 +123,9 @@ export function resetUserPoints(pk) {
         { headers: authHeaders() }
     )
 }
+
+export function deleteUser(pk) {
+    return axios.delete(`${API_URL}/accounts/delete/${pk}/`, {
+        headers: authHeaders(),
+    })
+}
