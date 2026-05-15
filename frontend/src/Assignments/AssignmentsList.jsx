@@ -5,6 +5,7 @@ import CreateAssignment from './CreateAssignment.jsx'
 import Assignment from './Assignment.jsx'
 import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'
 import UsersList from '../Users/UsersList.jsx'
+import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function AssignmentsList() {
     const [users, setUsers] = useState([])
@@ -12,6 +13,8 @@ export default function AssignmentsList() {
     const [assignments, setAssignments] = useState([])
     const [error, setError] = useState('')
     const [activeKey, setActiveKey] = useState('1')
+
+    const { userData } = useAuth()
 
     async function getAssignments() {
         try {
@@ -76,20 +79,26 @@ export default function AssignmentsList() {
                     ></Form.Control>
                 </div>
             )}
-            <UsersList users={users} getUsers={getAssignments} />
-            <CustomAccordion
-                activeKey={activeKey}
-                setActiveKey={setActiveKey}
-                title="Assignments"
-                component={
-                    <CreateAssignment
-                        users={users}
-                        chores={chores}
-                        getAssignments={getAssignments}
-                        setActiveKey={setActiveKey}
-                    />
-                }
+            <UsersList
+                users={users}
+                getUsers={getAssignments}
+                userData={userData}
             />
+            {!userData.is_child && (
+                <CustomAccordion
+                    activeKey={activeKey}
+                    setActiveKey={setActiveKey}
+                    title="Assignments"
+                    component={
+                        <CreateAssignment
+                            users={users}
+                            chores={chores}
+                            getAssignments={getAssignments}
+                            setActiveKey={setActiveKey}
+                        />
+                    }
+                />
+            )}
             {users.map((user) => {
                 const userAssignments = assignments.filter(
                     (a) => a.user === user.id
@@ -117,6 +126,7 @@ export default function AssignmentsList() {
                                                 chore.id === assignment.chore
                                         )}
                                         user={user}
+                                        userData={userData}
                                         completed={assignment.completed}
                                         setError={setError}
                                         getAssignments={getAssignments}

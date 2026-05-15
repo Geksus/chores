@@ -12,8 +12,17 @@ export default function SignUp() {
     const [is_child, setIs_child] = useState(false)
     const [first_name, setFirst_name] = useState('')
     const [last_name, setLast_name] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     const navigate = useNavigate()
+
+    function handleErrorMessage(message) {
+        setErrorMessage(message)
+
+        setTimeout(() => {
+            setErrorMessage('')
+        }, 10000)
+    }
 
     function validateForm() {
         let data = {
@@ -30,20 +39,27 @@ export default function SignUp() {
     function handleSubmit(e) {
         e.preventDefault()
         if (validateForm()) {
-            addUser(
-                username,
-                password,
-                email,
-                is_child,
-                first_name,
-                last_name
-            ).then(() => navigate('/'))
+            try {
+                addUser(
+                    username,
+                    password,
+                    email,
+                    is_child,
+                    first_name,
+                    last_name
+                ).then(() => navigate('/login'))
+            } catch (error) {
+                handleErrorMessage(error.message)
+            }
         }
     }
 
     return (
         <Container className="d-flex justify-content-center align-items-center mt-5">
             <title>SignUp</title>
+            {errorMessage !== '' && (
+                <Form.Control value={errorMessage} disabled />
+            )}
             <Row>
                 <Col className="d-flex flex-column align-items-center">
                     <h3>Add user</h3>
