@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import { Button, Table } from 'react-bootstrap'
 import { fetchUsers, updateUser } from '../api.js'
-import { Button, Container, Table } from 'react-bootstrap'
 
 export default function UsersList({
     users: propsUsers,
     getUsers: propsGetUsers,
+    userData: propsUserData,
 }) {
     const [internalUsers, setInternalUsers] = useState([])
     const [errorMessage, setErrorMessage] = useState('')
@@ -50,7 +51,7 @@ export default function UsersList({
     }, [errorMessage])
 
     return (
-        <div className="w-100">
+        <div className={propsUserData.is_child ? 'w-100 mb-2' : 'w-100'}>
             {isLoading ? (
                 <div className="d-flex flex-column justify-content-center">
                     <span>Loading...</span>
@@ -80,17 +81,19 @@ export default function UsersList({
                                 >
                                     <td>{user.first_name}</td>
                                     <td>{user.points}</td>
-                                    <td className="text-end">
-                                        <Button
-                                            size="sm"
-                                            variant="danger"
-                                            onClick={() =>
-                                                resetPoints(user.id, 0)
-                                            }
-                                        >
-                                            Reset
-                                        </Button>
-                                    </td>
+                                    {!propsUserData.is_child && (
+                                        <td className="text-end">
+                                            <Button
+                                                size="sm"
+                                                variant="danger"
+                                                onClick={() =>
+                                                    resetPoints(user.id, 0)
+                                                }
+                                            >
+                                                Reset
+                                            </Button>
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>

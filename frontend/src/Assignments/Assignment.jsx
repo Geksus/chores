@@ -1,18 +1,16 @@
 import { Button, DropdownButton, Dropdown } from 'react-bootstrap'
 
 import { completeAssignment, deleteAssignment, updateUser } from '../api.js'
-import { useAuth } from '../Context/AuthContext.jsx'
 
 export default function Assignment({
     id,
     user,
+    userData,
     chore,
     completed,
     setError,
     getAssignments,
 }) {
-    const { userData } = useAuth()
-
     async function finishAssignment(id) {
         try {
             await completeAssignment(id, true)
@@ -35,7 +33,7 @@ export default function Assignment({
         if (userData?.is_child === true) {
             return completed ? (
                 'Yes'
-            ) : (
+            ) : user.id === userData.id ? (
                 <Button
                     onClick={() => finishAssignment(id)}
                     variant="secondary"
@@ -44,6 +42,8 @@ export default function Assignment({
                 >
                     Complete
                 </Button>
+            ) : (
+                'No'
             )
         }
         return completed ? (
