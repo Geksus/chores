@@ -4,13 +4,17 @@ import { createAssignment } from '../api.js'
 
 export default function CreateAssignment({ users, chores, getAssignments }) {
     const [assignee, setAssignee] = useState(0)
-    const [task, setTask] = useState(0)
+    const [tasks, setTasks] = useState([])
     const [error, setError] = useState('')
 
     async function handleSubmit(event) {
         event.preventDefault()
         try {
-            await createAssignment(assignee, task)
+            const data = []
+            for (let task of tasks) {
+                data.push({ user: assignee, chore: task })
+            }
+            await createAssignment({ tasks: data })
             getAssignments()
         } catch (error) {
             setError(error.message)
@@ -60,14 +64,14 @@ export default function CreateAssignment({ users, chores, getAssignments }) {
                         Task
                     </InputGroup.Text>
                     <Form.Select
-                        value={task}
-                        onChange={(e) => setTask(e.target.value)}
+                        value={tasks}
+                        onChange={(e) => setTasks(e.target.value)}
                     >
                         <option value={0}>Select chore</option>
                         {Array.isArray(chores) &&
                             chores?.map((chore) => (
                                 <option key={chore.id} value={chore.id}>
-                                    {`${chore.title} | ${chore.description}`}
+                                    {`${chore.title} ${chore.description && `| ${chore.description}`}`}
                                 </option>
                             ))}
                     </Form.Select>

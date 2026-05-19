@@ -14,6 +14,9 @@ class ChoreSerializer(serializers.ModelSerializer):
 
 
 class AssignmentSerializer(serializers.ModelSerializer):
+    points = serializers.IntegerField(source='chore.base_points', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
+
     class Meta:
         model = Assignment
         fields = "__all__"

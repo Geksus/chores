@@ -47,7 +47,7 @@ export default function SignUp() {
                     is_child,
                     first_name,
                     last_name
-                ).then(() => navigate('/login'))
+                ).then(() => navigate('/'))
             } catch (error) {
                 handleErrorMessage(error.message)
             }

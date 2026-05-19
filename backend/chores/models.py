@@ -18,9 +18,14 @@ class Assignment(models.Model):
         Chore, on_delete=models.CASCADE, related_name="assignments"
     )
     completed = models.BooleanField(default=False)
-    points = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(blank=True, null=True)
+
+    @property
+    def points(self):
+        return self.chore.base_points
+    def username(self):
+        return self.user.username
 
     class Meta:
         unique_together = ("user", "chore", "created_at", "completed_at")

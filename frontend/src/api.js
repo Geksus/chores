@@ -2,6 +2,34 @@ import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
 
+function redirectToLogin() {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    window.location.href = '/login'
+}
+
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token')
+    const isAuthRoute =
+        config.url?.includes('/accounts/login/') ||
+        config.url?.includes('/accounts/register/')
+    if (!token && !isAuthRoute) {
+        redirectToLogin()
+        return Promise.reject(new Error('No token'))
+    }
+    return config
+})
+
+axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            redirectToLogin()
+        }
+        return Promise.reject(error)
+    }
+)
+
 function authHeaders() {
     const token = localStorage.getItem('token')
     return token ? { Authorization: `Token ${token}` } : {}
@@ -75,15 +103,10 @@ export async function deleteChore(pk) {
     })
 }
 
-export async function createAssignment(user, chore) {
-    return axios.post(
-        `${API_URL}/create-assignment/`,
-        {
-            user,
-            chore,
-        },
-        { headers: authHeaders() }
-    )
+export async function createAssignment(tasks) {
+    return axios.post(`${API_URL}/create-assignment/`, tasks, {
+        headers: authHeaders(),
+    })
 }
 
 export async function fetchAssignments() {
