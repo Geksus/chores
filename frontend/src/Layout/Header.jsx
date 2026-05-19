@@ -8,11 +8,17 @@ export default function Header() {
     const navigate = useNavigate()
 
     async function handleLogout() {
-        const response = await logout()
-        if (response.status === 200) {
-            setUserData(null)
+        if (confirm('Are you sure you want to log out?')) {
+            try {
+                const response = await logout()
+                if (response.status === 200) {
+                    setUserData(null)
+                }
+                navigate('/login')
+            } catch (error) {
+                console.log(error.message)
+            }
         }
-        navigate('/login')
     }
 
     return (
