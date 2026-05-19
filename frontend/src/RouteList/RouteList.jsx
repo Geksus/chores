@@ -12,10 +12,10 @@ export default function RouteList() {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<SignUp />} />
             <Route element={<PrivateRoute />}>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<AssignmentsList />} />
+                    <Route path="/register" element={<SignUp />} />
                     <Route path="/chores" element={<ChoresList />} />
                     <Route path="/users" element={<UserManagement />} />
                 </Route>

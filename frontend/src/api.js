@@ -10,9 +10,7 @@ function redirectToLogin() {
 
 axios.interceptors.request.use((config) => {
     const token = localStorage.getItem('token')
-    const isAuthRoute =
-        config.url?.includes('/accounts/login/') ||
-        config.url?.includes('/accounts/register/')
+    const isAuthRoute = config.url?.includes('/accounts/login/')
     if (!token && !isAuthRoute) {
         redirectToLogin()
         return Promise.reject(new Error('No token'))
