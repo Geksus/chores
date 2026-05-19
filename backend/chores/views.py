@@ -1,4 +1,5 @@
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 from .models import Chore, Assignment
 from .serializers import ChoreSerializer, AssignmentSerializer
@@ -37,6 +38,13 @@ class AssignmentCreateView(generics.CreateAPIView):
 
     model = Assignment
     serializer_class = AssignmentSerializer
+
+    def create(self, request, *args, **kwargs):
+        many = isinstance(request.data, list)
+        serializer = self.get_serializer(data=request.data, many=many)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class AssignmentUpdateView(generics.UpdateAPIView):

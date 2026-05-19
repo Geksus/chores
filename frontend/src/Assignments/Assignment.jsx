@@ -81,7 +81,7 @@ export default function Assignment({
             <td
                 className={`text-start align-middle ps-2 ${completed ? 'bg-success bg-opacity-75' : 'bg-warning bg-opacity-75'}`}
             >
-                <span>{`${chore.title} | ${chore.description}`}</span>
+                <span>{`${chore.title} ${chore.description && `| ${chore.description}`}`}</span>
             </td>
             <td
                 style={{ width: '250px' }}

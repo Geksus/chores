@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Form, Table } from 'react-bootstrap'
 import { fetchAssignments, fetchChores, fetchUsers } from '../api.js'
-import CreateAssignment from './CreateAssignment.jsx'
 import Assignment from './Assignment.jsx'
-import CustomAccordion from '../CustomAccordion/CustomAccordion.jsx'
 import UsersList from '../Users/UsersList.jsx'
 import { useAuth } from '../Context/AuthContext.jsx'
+import CreateAssignmentsModal from '../Modals/CreateAssignmentsModal.jsx'
 
 export default function AssignmentsList() {
     const [users, setUsers] = useState([])
     const [chores, setChores] = useState([])
     const [assignments, setAssignments] = useState([])
     const [error, setError] = useState('')
-    const [activeKey, setActiveKey] = useState('1')
 
     const { userData } = useAuth()
 
@@ -85,18 +83,11 @@ export default function AssignmentsList() {
                 userData={userData}
             />
             {!userData.is_child && (
-                <CustomAccordion
-                    activeKey={activeKey}
-                    setActiveKey={setActiveKey}
-                    title="Assignments"
-                    component={
-                        <CreateAssignment
-                            users={users}
-                            chores={chores}
-                            getAssignments={getAssignments}
-                            setActiveKey={setActiveKey}
-                        />
-                    }
+                <CreateAssignmentsModal
+                    assignments={assignments}
+                    getAssignments={getAssignments}
+                    users={users}
+                    chores={chores}
                 />
             )}
             {users.map((user) => {
