@@ -1,10 +1,12 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, use, useState } from 'react'
 
 const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
-    const stored = localStorage.getItem('user')
-    const [userData, setUserData] = useState(stored ? JSON.parse(stored) : undefined)
+    const stored = localStorage.getItem('user:v1')
+    const [userData, setUserData] = useState(
+        stored ? JSON.parse(stored) : undefined
+    )
 
     return (
         <AuthContext.Provider value={{ userData, setUserData }}>
@@ -14,5 +16,5 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-    return useContext(AuthContext)
+    return use(AuthContext)
 }

@@ -5,12 +5,13 @@ import Assignment from './Assignment.jsx'
 import UsersList from '../Users/UsersList.jsx'
 import { useAuth } from '../Context/AuthContext.jsx'
 import CreateAssignmentsModal from '../Modals/CreateAssignmentsModal.jsx'
+import { useError } from '../hooks/useError.jsx'
 
 export default function AssignmentsList() {
     const [users, setUsers] = useState([])
     const [chores, setChores] = useState([])
     const [assignments, setAssignments] = useState([])
-    const [error, setError] = useState('')
+    const [errorMessage, setErrorMessage] = useError()
 
     const { userData } = useAuth()
 
@@ -31,7 +32,7 @@ export default function AssignmentsList() {
                 setUsers(usersRes.data)
             }
         } catch (error) {
-            setError(error.message)
+            setErrorMessage(error.message)
         }
     }
 
@@ -51,7 +52,7 @@ export default function AssignmentsList() {
                         : []
                 )
         } catch (error) {
-            setError(error.message)
+            setErrorMessage(error.message)
         }
     }
 
@@ -59,20 +60,14 @@ export default function AssignmentsList() {
         getAllData()
     }, [])
 
-    useEffect(() => {
-        if (error !== '') {
-            setTimeout(() => setError(''), 10000)
-        }
-    }, [error])
-
     return (
         <div className="d-flex flex-column align-items-center">
             <title>Home</title>
-            {error !== '' && (
+            {errorMessage !== '' && (
                 <div className="my-2 w-75">
                     <Form.Control
                         className="text-danger"
-                        value={error}
+                        value={errorMessage}
                         disabled
                     ></Form.Control>
                 </div>
@@ -119,7 +114,7 @@ export default function AssignmentsList() {
                                         user={user}
                                         userData={userData}
                                         completed={assignment.completed}
-                                        setError={setError}
+                                        setErrorMessage={setErrorMessage}
                                         getAssignments={getAssignments}
                                     />
                                 </tr>
