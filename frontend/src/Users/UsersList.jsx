@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Button, Table } from 'react-bootstrap'
+import { Button, Form, Table } from 'react-bootstrap'
 import { fetchUsers, updateUser } from '../api.js'
+import { useError } from '../hooks/useError.jsx'
 
 export default function UsersList({
     users: propsUsers,
@@ -8,15 +9,13 @@ export default function UsersList({
     userData: propsUserData,
 }) {
     const [internalUsers, setInternalUsers] = useState([])
-    const [errorMessage, setErrorMessage] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useError()
 
     const users = propsUsers || internalUsers
     const getUsers = propsGetUsers || getInternalUsers
 
     async function getInternalUsers() {
         try {
-            setIsLoading(true)
             const response = await fetchUsers()
             if (response.status === 200 && response.data.length > 0) {
                 setInternalUsers(response.data)
@@ -24,8 +23,6 @@ export default function UsersList({
         } catch (error) {
             console.log(error.message)
             setErrorMessage(error.message)
-        } finally {
-            setIsLoading(false)
         }
     }
 
@@ -44,19 +41,18 @@ export default function UsersList({
         }
     }, [propsUsers])
 
-    useEffect(() => {
-        if (errorMessage !== '') {
-            setTimeout(() => setErrorMessage(''), 10000)
-        }
-    }, [errorMessage])
-
     return (
         <div className={propsUserData.is_child ? 'w-100 mb-2' : 'w-100'}>
-            {isLoading ? (
-                <div className="d-flex flex-column justify-content-center">
-                    <span>Loading...</span>
-                </div>
-            ) : (
+            {errorMessage !== '' && (
+                <Form className="mb-2">
+                    <Form.Control
+                        disabled
+                        className="text-danger"
+                        value={errorMessage}
+                    />
+                </Form>
+            )}
+            {users?.length > 0 && (
                 <Table hover>
                     <thead>
                         <tr>
@@ -65,39 +61,37 @@ export default function UsersList({
                             <th></th>
                         </tr>
                     </thead>
-                    {users?.length > 0 && (
-                        <tbody>
-                            {users?.map((user) => (
-                                <tr
-                                    className={
-                                        user.points >= 1000
-                                            ? 'users-table pulse'
-                                            : 'users-table'
-                                    }
-                                    key={user.username}
-                                    style={{
-                                        background: `linear-gradient(to right, rgba(80, 245, 39, 0.7) ${Math.min(user.points / 10, 100)}%, transparent ${Math.min(user.points / 10, 100)}%)`,
-                                    }}
-                                >
-                                    <td>{user.first_name}</td>
-                                    <td>{user.points}</td>
-                                    {!propsUserData.is_child && (
-                                        <td className="text-end">
-                                            <Button
-                                                size="sm"
-                                                variant="danger"
-                                                onClick={() =>
-                                                    resetPoints(user.id, 0)
-                                                }
-                                            >
-                                                Reset
-                                            </Button>
-                                        </td>
-                                    )}
-                                </tr>
-                            ))}
-                        </tbody>
-                    )}
+                    <tbody>
+                        {users?.map((user) => (
+                            <tr
+                                className={
+                                    user.points >= 1000
+                                        ? 'users-table pulse'
+                                        : 'users-table'
+                                }
+                                key={user.username}
+                                style={{
+                                    background: `linear-gradient(to right, rgba(80, 245, 39, 0.7) ${Math.min(user.points / 10, 100)}%, transparent ${Math.min(user.points / 10, 100)}%)`,
+                                }}
+                            >
+                                <td>{user.first_name}</td>
+                                <td>{user.points}</td>
+                                {!propsUserData.is_child && (
+                                    <td className="text-end">
+                                        <Button
+                                            size="sm"
+                                            variant="danger"
+                                            onClick={() =>
+                                                resetPoints(user.id, 0)
+                                            }
+                                        >
+                                            Reset
+                                        </Button>
+                                    </td>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
                 </Table>
             )}
         </div>

@@ -1,39 +1,50 @@
-import { useState } from 'react'
-import { addUser } from '../api.js'
-import { useNavigate } from 'react-router-dom'
-import Button from 'react-bootstrap/Button'
+import { useReducer } from 'react'
 import { Container, Form, InputGroup, Row, Col } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { addUser } from '../api.js'
+import Button from 'react-bootstrap/Button'
+import { useError } from '../hooks/useError.jsx'
+
+const initialForm = {
+    username: '',
+    password: '',
+    confirmPassword: '',
+    email: '',
+    is_child: false,
+    first_name: '',
+    last_name: '',
+}
+
+function formReducer(state, { field, value }) {
+    return { ...state, [field]: value }
+}
 
 export default function SignUp() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [email, setEmail] = useState('')
-    const [is_child, setIs_child] = useState(false)
-    const [first_name, setFirst_name] = useState('')
-    const [last_name, setLast_name] = useState('')
-    const [errorMessage, setErrorMessage] = useState('')
+    const [form, dispatch] = useReducer(formReducer, initialForm)
+    const [errorMessage, setErrorMessage] = useError()
 
     const navigate = useNavigate()
 
-    function handleErrorMessage(message) {
-        setErrorMessage(message)
-
-        setTimeout(() => {
-            setErrorMessage('')
-        }, 10000)
+    function set(field) {
+        return (e) =>
+            dispatch({
+                field,
+                value:
+                    e.target.type === 'checkbox'
+                        ? e.target.checked
+                        : e.target.value,
+            })
     }
 
     function validateForm() {
-        let data = {
-            username: username.length > 2,
-            password: password.length > 3,
-            confirmPassword: confirmPassword === password,
-            email: email.length > 2,
-            first_name: first_name.length > 2,
-            last_name: last_name.length > 2,
-        }
-        return Object.values(data).every((val) => val === true)
+        return (
+            form.username.length > 2 &&
+            form.password.length > 3 &&
+            form.confirmPassword === form.password &&
+            form.email.length > 2 &&
+            form.first_name.length > 2 &&
+            form.last_name.length > 2
+        )
     }
 
     function handleSubmit(e) {
@@ -41,15 +52,15 @@ export default function SignUp() {
         if (validateForm()) {
             try {
                 addUser(
-                    username,
-                    password,
-                    email,
-                    is_child,
-                    first_name,
-                    last_name
+                    form.username,
+                    form.password,
+                    form.email,
+                    form.is_child,
+                    form.first_name,
+                    form.last_name
                 ).then(() => navigate('/'))
             } catch (error) {
-                handleErrorMessage(error.message)
+                setErrorMessage(error.message)
             }
         }
     }
@@ -73,10 +84,8 @@ export default function SignUp() {
                                     placeholder="Username"
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
-                                    value={username}
-                                    onChange={(e) =>
-                                        setUsername(e.target.value)
-                                    }
+                                    value={form.username}
+                                    onChange={set('username')}
                                 />
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -85,10 +94,8 @@ export default function SignUp() {
                                     placeholder="Password"
                                     aria-label="Password"
                                     aria-describedby="basic-addon1"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
+                                    value={form.password}
+                                    onChange={set('password')}
                                 />
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -97,10 +104,8 @@ export default function SignUp() {
                                     placeholder="Confirm Password"
                                     aria-label="Confirm Password"
                                     aria-describedby="basic-addon1"
-                                    value={confirmPassword}
-                                    onChange={(e) =>
-                                        setConfirmPassword(e.target.value)
-                                    }
+                                    value={form.confirmPassword}
+                                    onChange={set('confirmPassword')}
                                 />
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -109,8 +114,8 @@ export default function SignUp() {
                                     placeholder="Email"
                                     aria-label="Email"
                                     aria-describedby="basic-addon1"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={form.email}
+                                    onChange={set('email')}
                                 />
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -119,10 +124,8 @@ export default function SignUp() {
                                     placeholder="First Name"
                                     aria-label="First Name"
                                     aria-describedby="basic-addon1"
-                                    value={first_name}
-                                    onChange={(e) =>
-                                        setFirst_name(e.target.value)
-                                    }
+                                    value={form.first_name}
+                                    onChange={set('first_name')}
                                 />
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -131,17 +134,15 @@ export default function SignUp() {
                                     placeholder="Last Name"
                                     aria-label="Last Name"
                                     aria-describedby="basic-addon1"
-                                    value={last_name}
-                                    onChange={(e) =>
-                                        setLast_name(e.target.value)
-                                    }
+                                    value={form.last_name}
+                                    onChange={set('last_name')}
                                 />
                             </InputGroup>
                             <Form.Check
                                 type="checkbox"
                                 label="Is Child"
-                                checked={is_child}
-                                onChange={(e) => setIs_child(e.target.checked)}
+                                checked={form.is_child}
+                                onChange={set('is_child')}
                             />
                         </Form.Group>
                     </Form>

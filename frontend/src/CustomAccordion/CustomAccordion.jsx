@@ -33,13 +33,13 @@ export default function CustomAccordion({
 function CustomToggle({ children, eventKey, activeKey, setActiveKey }) {
     const decoratedOnClick = useAccordionButton(eventKey)
 
-    function handleClick() {
+    function toggleVisibility() {
         setActiveKey(activeKey === '0' ? null : '0')
         decoratedOnClick(eventKey)
     }
 
     return (
-        <Button size="sm" variant="success" onClick={handleClick}>
+        <Button size="sm" variant="success" onClick={toggleVisibility}>
             {children}
         </Button>
     )

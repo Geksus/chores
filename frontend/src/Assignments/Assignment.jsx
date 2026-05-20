@@ -8,7 +8,7 @@ export default function Assignment({
     userData,
     chore,
     completed,
-    setError,
+    setErrorMessage,
     getAssignments,
 }) {
     async function finishAssignment(id) {
@@ -16,7 +16,7 @@ export default function Assignment({
             await completeAssignment(id, true)
             await getAssignments()
         } catch (error) {
-            setError(error.message)
+            setErrorMessage(error.message)
         }
     }
 
@@ -25,7 +25,7 @@ export default function Assignment({
             await deleteAssignment(id)
             await getAssignments()
         } catch (error) {
-            setError(error.message)
+            setErrorMessage(error.message)
         }
     }
 
@@ -49,7 +49,7 @@ export default function Assignment({
         return completed ? (
             <CompletionConfirmation
                 id={id}
-                setError={setError}
+                setErrorMessage={setErrorMessage}
                 getAssignments={getAssignments}
                 userId={user.id}
                 chorePoints={chore.base_points}
@@ -95,7 +95,7 @@ export default function Assignment({
 
 function CompletionConfirmation({
     id,
-    setError,
+    setErrorMessage,
     getAssignments,
     userId,
     chorePoints,
@@ -105,14 +105,26 @@ function CompletionConfirmation({
             await completeAssignment(id, false)
             await getAssignments()
         } catch (error) {
-            setError(error.message)
+            setErrorMessage(error.message)
         }
     }
 
     async function cleanUp() {
-        await deleteAssignment(id)
-        await updateUser(userId, chorePoints)
-        await getAssignments()
+        try {
+            const [delAssignment, updUser, fetchAssignments] =
+                await Promise.all([
+                    deleteAssignment(id),
+                    updateUser(userId, chorePoints),
+                    getAssignments(),
+                ])
+            return [
+                delAssignment.status,
+                updUser.status,
+                fetchAssignments.status,
+            ]
+        } catch (error) {
+            setErrorMessage(error.message)
+        }
     }
 
     return (

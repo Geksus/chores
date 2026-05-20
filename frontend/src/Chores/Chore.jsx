@@ -2,10 +2,9 @@ import { Button } from 'react-bootstrap'
 import { deleteChore } from '../api.js'
 import { useAuth } from '../Context/AuthContext.jsx'
 
-export default function Chore({ data, setIsLoading, setError }) {
+export default function Chore({ data, setError }) {
     const { userData } = useAuth()
     async function destroyChore(id) {
-        setIsLoading(true)
         try {
             const agree = confirm(
                 `Are you sure you want to delete ${data.title}?`
@@ -16,8 +15,6 @@ export default function Chore({ data, setIsLoading, setError }) {
             }
         } catch (error) {
             setError(error.message)
-        } finally {
-            setIsLoading(false)
         }
     }
 

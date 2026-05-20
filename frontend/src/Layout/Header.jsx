@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Button, DropdownButton, Dropdown } from 'react-bootstrap'
+import { DropdownButton, Dropdown } from 'react-bootstrap'
 import { logout } from '../api.js'
 import { useAuth } from '../Context/AuthContext.jsx'
 

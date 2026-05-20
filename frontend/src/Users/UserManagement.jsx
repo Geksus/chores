@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { deleteUser, fetchUsers } from '../api.js'
 import { Button, Form, Table } from 'react-bootstrap'
+import { deleteUser, fetchUsers } from '../api.js'
 import { useAuth } from '../Context/AuthContext.jsx'
+import { useError } from '../hooks/useError.jsx'
 
 export default function UserManagement() {
     const [users, setUsers] = useState([])
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useError()
 
     const { userData } = useAuth()
 
@@ -28,18 +29,12 @@ export default function UserManagement() {
         try {
             const response = await deleteUser(id)
             if (response.status === 204) {
-                getUsers()
+                await getUsers()
             }
         } catch (error) {
             setErrorMessage(error.message)
         }
     }
-
-    useEffect(() => {
-        if (errorMessage !== '') {
-            setTimeout(() => setErrorMessage(''), 10000)
-        }
-    }, [errorMessage])
 
     useEffect(() => {
         getUsers()

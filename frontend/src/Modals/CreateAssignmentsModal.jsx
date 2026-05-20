@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap'
 import { createAssignment } from '../api.js'
+import { useError } from '../hooks/useError.jsx'
 
 export default function CreateAssignmentsModal(props) {
     const [show, setShow] = useState(false)
     const [assignee, setAssignee] = useState(0)
     const [tasks, setTasks] = useState([])
-    const [error, setError] = useState('')
+    const [errorMessage, setErrorMessage] = useError()
 
     const handleShow = () => setShow(true)
 
@@ -23,9 +24,10 @@ export default function CreateAssignmentsModal(props) {
             setTasks([])
             return
         }
-        const assignedChores = props.assignments
-            .filter((ass) => ass.user === id)
-            .map((a) => a.chore)
+        const assignedChores = props.assignments.reduce((acc, a) => {
+            if (a.user === id) acc.push(a.chore)
+            return acc
+        }, [])
         setAssignee(id)
         setTasks(assignedChores)
     }
@@ -40,11 +42,6 @@ export default function CreateAssignmentsModal(props) {
         }
     }
 
-    function handleError(error) {
-        setError(error)
-        setTimeout(() => setError(''), 10000)
-    }
-
     async function handleSubmit(event) {
         event.preventDefault()
         try {
@@ -55,7 +52,7 @@ export default function CreateAssignmentsModal(props) {
             await createAssignment(data)
             props.getAssignments()
         } catch (error) {
-            handleError(error.message)
+            setErrorMessage(error.message)
         }
     }
 
@@ -71,7 +68,11 @@ export default function CreateAssignmentsModal(props) {
 
             <Modal show={show} onHide={handleClose} backdrop="static" centered>
                 <Modal.Header closeButton>
-                    {error === '' ? <strong>Assign tasks</strong> : error}
+                    {errorMessage === '' ? (
+                        <strong>Assign tasks</strong>
+                    ) : (
+                        errorMessage
+                    )}
                 </Modal.Header>
                 <Modal.Body>
                     <InputGroup className="mb-3" size="sm">

@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { createChore } from '../api.js'
+import { useState } from 'react'
 import {
     Button,
     Container,
@@ -7,19 +6,18 @@ import {
     FormControl,
     InputGroup,
 } from 'react-bootstrap'
-import { errorTimeout } from '../utils/utils.js'
+import { createChore } from '../api.js'
+import { useError } from '../hooks/useError.jsx'
 
 export default function CreateChore({ getChores }) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [base_points, setBase_points] = useState(0)
-    const [error, setError] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useError()
 
     async function handleSubmit(e) {
         e.preventDefault()
-        setError('')
-        setIsLoading(true)
+        setErrorMessage('')
 
         try {
             await createChore(title, description, base_points)
@@ -28,22 +26,15 @@ export default function CreateChore({ getChores }) {
             setBase_points(0)
             getChores()
         } catch (error) {
-            setError(error.message)
-        } finally {
-            setIsLoading(false)
+            setErrorMessage(error.message)
         }
     }
 
-    useEffect(() => {
-        errorTimeout(error)
-    }, [error])
-
     return (
         <Container>
-            {isLoading && <span>Loading...</span>}
-            {error !== '' && (
+            {errorMessage !== '' && (
                 <div>
-                    <Form.Control value={error} disabled></Form.Control>
+                    <Form.Control value={errorMessage} disabled></Form.Control>
                 </div>
             )}
             <Form
